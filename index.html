@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+====================================================================
+                            EDIT ME GUIDE
+====================================================================
+Everything you'll want to personalize is marked with an
+"EDIT ME" comment right above it. Search this file for "EDIT ME"
+(Ctrl+F / Cmd+F) to jump between every editable spot, or use this
+guide to find things by section:
+
+  PAGE INFO         → head section (page title, description)
+  LOGO              → header: add images/logo.png
+  NAME & INTRO       → Home section: <h1> and intro paragraph
+  PROFILE PHOTO      → Home section: add images/profile.jpg or .png
+  ABOUT              → About section: your about paragraph
+  SKILLS             → "My Skills" section: 4 skill cards
+  TECH STACK          → "Why Hire Me" section: stack pills
+  PROJECTS (5)        → Portfolio section: title, description,
+                        demo link, and images/project1.jpg–project5.jpg
+  STATS               → numbers in the stats bar (Happy Clients, etc.)
+  TESTIMONIAL         → swap in a real client quote once you have one
+  CONTACT INFO        → Contact section: phone, email, address
+  SOCIAL LINKS        → Contact section: LinkedIn/Twitter/Instagram/
+                        Facebook/GitHub hrefs (currently "#")
+  CONTACT FORM        → already connected to Formspree, delivering to
+                        khanismaildev@gmail.com — nothing to do here
+  FOOTER              → copyright line
+
+  COLORS / FONTS      → all in css/style.css, under ":root" at the
+                        top of that file (e.g. --green, --yellow1)
+====================================================================
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- EDIT ME: page title — shown in the browser tab and search results -->
+<title>Ismail Khan — Aspiring AI Security Engineer</title>
+<!-- EDIT ME: short description for search engines and link previews (~150 characters) -->
+<meta name="description" content="Ismail Khan is an aspiring AI Security Engineer building skills in artificial intelligence, cybersecurity, and secure software development.">
+<meta property="og:title" content="Ismail Khan — Aspiring AI Security Engineer">
+<meta property="og:description" content="Aspiring AI Security Engineer building and learning to protect intelligent systems through AI, cybersecurity, and secure software development.">
+<!-- EDIT ME: add a preview image (e.g. images/og-image.jpg, ~1200x630px) and uncomment the line below -->
+<!-- <meta property="og:image" content="images/og-image.jpg"> -->
+<!-- EDIT ME: add a favicon file to the images folder (e.g. images/favicon.ico) — until then, browsers just show a default blank tab icon -->
+<link rel="icon" href="images/favicon.ico" onerror="this.remove()">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <!-- EDIT ME: your logo. Add your full logo image to the images
+       folder as logo.png — it will show automatically.
+       (Fixed: logo is now wrapped in a link back to Home.) -->
+  <a href="#home" class="logo logo-link" id="logoLink" aria-label="Go to Home">
+    <img class="logo-full-img" src="images/logo.png" alt="Ismail Khan logo"
+         onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'logo-icon',innerHTML:'&lt;/&gt; IKD'}))">
+  </a>
+  <nav>
+    <ul id="navList">
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="nav-right">
+    <a href="#contact" class="btn">Contact Me</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navList">☰</button>
+  </div>
+</header>
+
+<script>
+  var navList = document.getElementById('navList');
+  var menuToggle = document.getElementById('menuToggle');
+  menuToggle.addEventListener('click', function(){
+    var isOpen = navList.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    menuToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    menuToggle.textContent = isOpen ? '✕' : '☰';
+  });
+  document.querySelectorAll('#navList a').forEach(function(link){
+    link.addEventListener('click', function(){
+      navList.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Open menu');
+      menuToggle.textContent = '☰';
+    });
+  });
+
+  /* FIXED (bug #23/#24): active-underline + logo-to-Home behavior.
+     - Clicking a nav link (or the logo) immediately marks it active.
+     - Scrolling also keeps the underline synced to whichever section
+       is currently in view, so it doesn't stay stuck on Home. */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navList a'));
+  var sections = navLinks
+    .map(function(link){ return document.querySelector(link.getAttribute('href')); })
+    .filter(Boolean);
+
+  function setActiveLink(hash){
+    navLinks.forEach(function(link){
+      link.classList.toggle('active', link.getAttribute('href') === hash);
+    });
+  }
+
+  navLinks.forEach(function(link){
+    link.addEventListener('click', function(){
+      setActiveLink(link.getAttribute('href'));
+    });
+  });
+
+  var logoLink = document.getElementById('logoLink');
+  logoLink.addEventListener('click', function(){
+    setActiveLink('#home');
+  });
+
+  var sectionObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        setActiveLink('#' + entry.target.id);
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+  sections.forEach(function(section){ sectionObserver.observe(section); });
+</script>
+
+<!-- ============ HOME ============ -->
+<section id="home" class="hero">
+  <div class="hero-text">
+    <span class="eyebrow">Introducing</span>
+    <!-- EDIT ME: your name -->
+    <h1>Hello <span class="accent">I'm Ismail Khan</span></h1>
+    <!-- EDIT ME: your intro text -->
+    <p>I'm an aspiring AI Security Engineer focused on building and securing AI-powered applications. I’m developing skills in cybersecurity, artificial intelligence, machine learning, and secure software development to help create AI systems that are reliable, secure, and resistant to modern threats.</p>
+    <!-- EDIT ME: link this to your GitHub profile -->
+    <a href="https://github.com/ismailkhan-dev" target="_blank" rel="noopener noreferrer" class="btn">My Work</a>
+  </div>
+  <div class="hero-visual">
+    <!-- EDIT ME: replace with your photo. Add a file named
+         profile.jpg OR profile.png to the images folder — both
+         work, it will appear automatically inside the green
+         circle either way. -->
+    <img src="images/profile.jpg" alt="Ismail Khan" data-fallback="images/profile.png"
+         onerror="if(!this.dataset.tried){this.dataset.tried='1'; this.src=this.dataset.fallback;} else {this.replaceWith(Object.assign(document.createElement('div'),{className:'photo-placeholder',textContent:'Add your photo: images/profile.jpg or images/profile.png'}));}">
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="section-inner about-section">
+    <span class="eyebrow">About Me</span>
+    <div class="section-head">
+      <h2>Who I Am</h2>
+    </div>
+    <!-- EDIT ME: your about text — who you are, what you build, what
+         kind of problems you enjoy, and where you're headed. Keep it
+         short and specific, not a long autobiography. -->
+    <p class="about-text">I'm an aspiring AI Security Engineer with a strong interest in both artificial intelligence and cybersecurity. I'm building my foundation in programming, computer science, networking, machine learning, and security, with a focus on understanding how AI systems work, how they can be attacked, and how they can be made more secure. My goal is to grow into an expert who can build and protect intelligent systems while solving real-world security problems.</p>
+    <!-- EDIT ME: this button points to files/resume.pdf —
+         add your resume PDF into the files folder with that
+         exact name and it'll work automatically. -->
+    <!-- <a href="files/resume.pdf" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">Download Resume</a> -->
+  </div>
+</section>
+
+<section class="panel">
+  <div class="section-inner">
+    <span class="eyebrow">My Skills</span>
+    <div class="section-head">
+      <h2>What I Bring To A Project</h2>
+    </div>
+    <!-- EDIT ME: your skills -->
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="icon">🛡️</div>
+        <h4>AI Security</h4>
+        <p>Protecting AI systems from security threats, attacks, and vulnerabilities.</p>
+      </div>
+      <div class="skill-card">
+        <div class="icon">🤖</div>
+        <h4>AI & Machine Learning</h4>
+        <p>Building a strong foundation in machine learning and understanding how intelligent systems work.</p>
+      </div>
+      <div class="skill-card">
+        <div class="icon">🔐</div>
+        <h4>Cybersecurity</h4>
+        <p>Understanding networks, applications, authentication, vulnerabilities, and defensive security.</p>
+      </div>
+      <div class="skill-card">
+        <div class="icon">☁️</div>
+        <h4>Secure Cloud & Applications</h4>
+        <p>Learning to design and secure cloud-based AI applications, APIs, and infrastructure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-inner why-hire">
+    <!-- EDIT ME: your tech stack pills -->
+    <div class="stack">
+      <div class="stack-pill">Python</div>
+      <div class="stack-pill">Linux</div>
+      <div class="stack-pill">Networking</div>
+      <div class="stack-pill">Cybersecurity</div>
+      <div class="stack-pill">Machine Learning</div>
+      <div class="stack-pill">Git & GitHub</div>
+    </div>
+    <div class="copy">
+      <span class="eyebrow">What I’m Building</span>
+      <h2 style="font-size:34px; color:#fff; font-weight:600;">Building Secure & Intelligent Systems</h2>
+      <p>I'm focused on building secure and reliable AI-powered applications. I combine my growing knowledge of artificial intelligence, cybersecurity, and software development to understand security risks and build systems with security in mind. I'm continuously learning and building practical projects to turn these skills into real-world solutions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PORTFOLIO (5 projects) ============ -->
+<!-- <section id="portfolio" class="panel">
+  <div class="section-inner">
+    <span class="eyebrow">My Work</span>
+    <div class="section-head">
+      <h2>Portfolio</h2>
+    </div> -->
+
+    <!-- PROJECT 1 -->
+    <!-- <div class="project-row">
+      <div class="project-info">
+        <span class="eyebrow">Project 1</span> -->
+        <!-- EDIT ME: project title -->
+        <!-- <h3>Project Title Goes Here</h3> -->
+        <!-- EDIT ME: project description -->
+        <!-- <p>Short description of the project — what it does, the problem it solves, and the tech stack used to build it.</p> -->
+        <!-- EDIT ME: demo link -->
+        <!-- <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">View Live Demo →</a>
+      </div> -->
+      <!-- <div class="project-media"> -->
+        <!-- EDIT ME: put an image named project1.jpg in the images folder -->
+        <!-- <img src="images/project1.jpg" alt="Project 1 screenshot" onerror="this.parentElement.textContent='Add images/project1.jpg'">
+      </div>
+    </div> -->
+
+    <!-- PROJECT 2 -->
+    <!-- <div class="project-row project-reverse">
+      <div class="project-info">
+        <span class="eyebrow">Project 2</span>
+        <h3>Project Title Goes Here</h3>
+        <p>Short description of the project — what it does, the problem it solves, and the tech stack used to build it.</p>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">View Live Demo →</a>
+      </div>
+      <div class="project-media">
+        <img src="images/project2.jpg" alt="Project 2 screenshot" onerror="this.parentElement.textContent='Add images/project2.jpg'">
+      </div>
+    </div> -->
+
+    <!-- VIEW ALL — reveals Projects 3, 4 and 5 -->
+    <!-- <div class="view-all">
+      <button type="button" id="viewAllBtn" class="btn view-all-btn">View All</button>
+    </div> -->
+
+    <!-- PROJECT 3 -->
+    <!-- <div class="project-row extra">
+      <div class="project-info">
+        <span class="eyebrow">Project 3</span>
+        <h3>Project Title Goes Here</h3>
+        <p>Short description of the project — what it does, the problem it solves, and the tech stack used to build it.</p>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">View Live Demo →</a>
+      </div>
+      <div class="project-media">
+        <img src="images/project3.jpg" alt="Project 3 screenshot" onerror="this.parentElement.textContent='Add images/project3.jpg'">
+      </div>
+    </div> -->
+
+    <!-- PROJECT 4 -->
+    <!-- <div class="project-row extra project-reverse">
+      <div class="project-info">
+        <span class="eyebrow">Project 4</span>
+        <h3>Project Title Goes Here</h3>
+        <p>Short description of the project — what it does, the problem it solves, and the tech stack used to build it.</p>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">View Live Demo →</a>
+      </div>
+      <div class="project-media">
+        <img src="images/project4.jpg" alt="Project 4 screenshot" onerror="this.parentElement.textContent='Add images/project4.jpg'">
+      </div>
+    </div> -->
+
+    <!-- PROJECT 5 -->
+    <!-- <div class="project-row extra">
+      <div class="project-info">
+        <span class="eyebrow">Project 5</span>
+        <h3>Project Title Goes Here</h3>
+        <p>Short description of the project — what it does, the problem it solves, and the tech stack used to build it.</p>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="project-link">View Live Demo →</a>
+      </div>
+      <div class="project-media">
+        <img src="images/project5.jpg" alt="Project 5 screenshot" onerror="this.parentElement.textContent='Add images/project5.jpg'">
+      </div>
+    </div> -->
+
+  </div>
+</section>
+
+<script>
+  document.getElementById('viewAllBtn').addEventListener('click', function(){
+    document.querySelectorAll('.project-row.extra').forEach(function(row){
+      row.classList.add('show');
+    });
+    this.closest('.view-all').style.display = 'none';
+  });
+</script>
+
+<section>
+  <div class="section-inner stats-wrap">
+    <div class="stat-circle circle-tr"></div>
+    <div class="stat-circle circle-bl"></div>
+    <div class="stat-circle small s1"></div>
+    <div class="stat-circle small s2"></div>
+    <div class="stat-circle small s3"></div>
+    <!-- EDIT ME: your numbers -->
+    <div class="stats-bar">
+      <div class="stat"><div class="num">0+</div><div class="label">Happy Clients</div></div>
+      <div class="stat"><div class="num">0</div><div class="label">Projects Done</div></div>
+      <div class="stat"><div class="num">0</div><div class="label">Top Reviews</div></div>
+      <div class="stat"><div class="num">0</div><div class="label">Years Experience</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="panel">
+  <div class="section-inner">
+    <div class="testimonial">
+      <div class="quote-mark">"</div> -->
+      <!-- EDIT ME: a real client testimonial once you have one -->
+      <!-- <blockquote>Client testimonial goes here — swap this out once you have real feedback from someone you've worked with.</blockquote>
+      <div class="name">Client Name</div>
+      <div class="role">Their role / company</div>
+    </div>
+  </div>
+</section> -->
+
+
+
+
+<section class="panel">
+  <div class="section-inner">
+    <div class="testimonial">
+      <div class="quote-mark">My Approach</div>
+      <!-- EDIT ME: a real client testimonial once you have one -->
+      <blockquote>I believe strong security starts with understanding how systems work and how they can fail. I'm focused on continuously learning, building practical projects, and developing the skills needed to create and secure intelligent systems.</blockquote>
+      <!-- <div class="name">Client Name</div> -->
+      <!-- <div class="role">Their role / company</div> -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="section-inner contact-cta">
+    <div class="contact-split">
+
+      <div class="contact-left">
+        <span class="eyebrow">Contact Me</span>
+        <!-- EDIT ME: heading and intro text -->
+        <h2>Let’s Build Something Secure</h2>
+        <p>Have a project, idea, or security challenge in mind? Feel free to reach out. I’m always interested in learning, building, and working on projects involving AI, cybersecurity, and secure technology.</p>
+      </div>
+
+      <div class="contact-right">
+        <!-- This form submits to Formspree (https://formspree.io), which
+             emails every submission to khanismaildev@gmail.com — no
+             backend of your own needed. To change which inbox receives
+             these messages, or to see submissions, log into your
+             Formspree dashboard. To point this form at a different
+             account entirely, replace the ID at the end of the
+             action="..." URL below with a new Formspree form ID. -->
+        <form class="contact-form" id="contactForm" action="https://formspree.io/f/mkjwrjbd" method="POST">
+          <div class="form-row">
+            <div class="field">
+              <label class="visually-hidden" for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="Full Name" required>
+            </div>
+            <div class="field">
+              <label class="visually-hidden" for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="Email" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="visually-hidden" for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-solid">Send Message</button>
+          <p class="form-error" id="formError" hidden>Something went wrong — please try again, or email me directly.</p>
+        </form>
+
+        <div class="form-success" id="formSuccess" hidden>
+          <div class="form-success-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3>Message Sent Successfully</h3>
+          <p>Thank you for reaching out! Your message has been sent successfully. I appreciate you getting in touch and will get back to you as soon as possible.</p>
+          <button type="button" class="project-link" id="sendAnotherBtn">Send another message →</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- EDIT ME: your phone, email, and address -->
+    <div class="info-rows-line">
+      <div class="info-row">
+        <div class="info-icon-sm">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2C6.48 2 2 6.24 2 11.47c0 1.94.58 3.75 1.58 5.27L2 22l5.44-1.53a10 10 0 004.56 1.1c5.52 0 10-4.24 10-9.47C22 6.24 17.52 2 12 2zm0 17.24c-1.5 0-2.9-.4-4.1-1.1l-.3-.17-3.23.91.87-3.13-.2-.32a7.87 7.87 0 01-1.24-4.16c0-4.36 3.63-7.9 8.2-7.9s8.2 3.54 8.2 7.9-3.63 7.87-8.2 7.87zm4.5-5.9c-.25-.13-1.47-.72-1.7-.8-.23-.08-.4-.13-.56.13-.17.25-.65.8-.8.97-.15.17-.3.19-.55.06-.25-.12-1.06-.39-2.02-1.24-.75-.66-1.25-1.48-1.4-1.73-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31s-.87.85-.87 2.08.9 2.41 1.02 2.58c.13.17 1.77 2.7 4.29 3.79.6.26 1.07.42 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.23-.17-.48-.29z"/></svg>
+        </div>
+        <div>
+          <div class="info-label-sm">Contact Number</div>
+          <span class="info-value-sm">+92 347 8988720</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon-sm">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7L22 6"/></svg>
+        </div>
+        <div>
+          <div class="info-label-sm">Email</div>
+          <a class="info-value-sm" href="mailto:khanismaildev@gmail.com">khanismaildev@gmail.com</a>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon-sm">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0114 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        </div>
+        <div>
+          <div class="info-label-sm">Address</div>
+          <span class="info-value-sm">KPK, Pakistan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT ME: your real social links -->
+    <div class="socials contact-socials">
+      <!-- <a href="#" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.1 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.9c0-1.65-.03-3.77-2.3-3.77-2.3 0-2.66 1.8-2.66 3.65V23h-4V8z"/></svg> -->
+      </a>
+      <a href="https://x.com/ismailkhandev" target="_blank" rel="noopener noreferrer" title="Twitter" aria-label="Twitter">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.6l-5.2-6.4L5.2 22H2l7.7-8.8L1.5 2h6.8l4.7 5.9L18.9 2zm-1.2 18h1.8L7.4 4H5.5l12.2 16z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/ismailkhandev/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2c2.7 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.22.6 1.77 1.15.55.55.89 1.11 1.15 1.77.25.64.42 1.37.47 2.43.05 1.06.06 1.42.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43a4.9 4.9 0 01-1.15 1.77 4.9 4.9 0 01-1.77 1.15c-.64.25-1.37.42-2.43.47C15.06 21.99 14.7 22 12 22s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47a4.9 4.9 0 01-1.77-1.15 4.9 4.9 0 01-1.15-1.77c-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.7 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.22 1.15-1.77A4.9 4.9 0 015.45 2.53c.64-.25 1.37-.42 2.43-.47C8.94 2.01 9.3 2 12 2zm0 1.8c-2.65 0-2.98.01-4.03.06-.86.04-1.33.18-1.64.3-.41.16-.71.35-1.02.66-.31.31-.5.61-.66 1.02-.12.31-.26.78-.3 1.64C4.31 9.02 4.3 9.35 4.3 12s.01 2.98.06 4.03c.04.86.18 1.33.3 1.64.16.41.35.71.66 1.02.31.31.61.5 1.02.66.31.12.78.26 1.64.3 1.05.05 1.38.06 4.03.06s2.98-.01 4.03-.06c.86-.04 1.33-.18 1.64-.3.41-.16.71-.35 1.02-.66.31-.31.5-.61.66-1.02.12-.31.26-.78.3-1.64.05-1.05.06-1.38.06-4.03s-.01-2.98-.06-4.03c-.04-.86-.18-1.33-.3-1.64-.16-.41-.35-.71-.66-1.02a2.7 2.7 0 00-1.02-.66c-.31-.12-.78-.26-1.64-.3C14.98 3.81 14.65 3.8 12 3.8zm0 3.05a5.15 5.15 0 110 10.3 5.15 5.15 0 010-10.3zm0 1.8a3.35 3.35 0 100 6.7 3.35 3.35 0 000-6.7zm5.35-2.02a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg>
+      </a>
+      <!-- <a href="#" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.86c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg> -->
+      </a>
+      <a href="https://github.com/ismailkhan-dev" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.61-3.37-1.21-3.37-1.21-.46-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.3 9.3 0 012.5-.35c.85 0 1.71.12 2.5.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.26 10.26 0 0022 12.25C22 6.58 17.52 2 12 2z"/></svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  var contactForm = document.getElementById('contactForm');
+  var formSuccess = document.getElementById('formSuccess');
+  var sendAnotherBtn = document.getElementById('sendAnotherBtn');
+  var formError = document.getElementById('formError');
+  var submitBtn = contactForm.querySelector('button[type="submit"]');
+
+  contactForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    formError.hidden = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    fetch(contactForm.action, {
+      method: 'POST',
+      body: new FormData(contactForm),
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(function(response){
+      if (response.ok) {
+        // BUG 1 FIX: only toggle visibility here — never call
+        // form.reset() or set any input/textarea .value. The same
+        // <form> element stays in the DOM with the user's values intact.
+        contactForm.hidden = true;
+        formSuccess.hidden = false;
+      } else {
+        formError.hidden = false;
+      }
+    })
+    .catch(function(){
+      formError.hidden = false;
+    })
+    .finally(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    });
+  });
+
+  // BUG 2 FIX: swap visibility only — no scrollTo/scrollIntoView/focus/
+  // location.hash, and no clearing of Name/Email/Message. The viewport
+  // and field values stay exactly as the user left them.
+  sendAnotherBtn.addEventListener('click', function(){
+    contactForm.reset();
+    formSuccess.hidden = true;
+    contactForm.hidden = false;
+  });
+</script>
+
+<footer>
+  <div class="logo">
+    <img class="logo-full-img" src="images/logo.png" alt="Ismail Khan logo"
+         onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'logo-icon',innerHTML:'&lt;/&gt; IKD'}))">
+  </div>
+  <!-- EDIT ME: year and name -->
+  <p>© 2026 Ismail Khan. All rights reserved.</p>
+</footer>
+
+
+</body>
+</html>
